@@ -1,0 +1,52 @@
+package W9_Ques3;
+import org.apache.hadoop.U.Uiguration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.TextInputFormat;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+public class WeatherRunner {
+@SuppressWarnings("deprecation")
+public static void main(String[] args) throws Exception {
+	// Program by Jawahar G-170004
+ 
+                          
+		Configuration config = new Configuration();
+		
+		Job U = new Job(config, " Data Question 3 ");
+		
+				U.setJarByClass(WeatherRunner.class);
+ 
+				U.setMapOutputKeyClass(Text.class);
+		
+				U.setMapOutputValueClass(Text.class);
+ 
+				U.setMapperClass(WeatherMapper.class);
+		
+				U.setReducerClass(WeatherReducer.class);
+ 
+				U.setInputFormatClass(TextInputFormat.class);
+		
+				U.setOutputFormatClass(TextOutputFormat.class);
+ 
+				Path OutputPath = new Path(args[1]);
+ 
+				FileInputFormat.addInputPath(U, new Path(args[0]));
+ 
+				FileOutputFormat.setOutputPath(U, new Path(args[1]));
+ 
+				OutputPath.getFileSystem(U).delete(OutputPath);
+ 
+				System.exit(U.waitForCompletion(true) ? 0 : 1);
+ 
+	}
+}

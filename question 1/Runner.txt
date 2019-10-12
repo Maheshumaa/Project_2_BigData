@@ -1,0 +1,46 @@
+import java.io.IOException;
+import java.util.*;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.config.*;
+import org.apache.hadoop.io.*;
+import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+
+import javafx.scene.text.Text;
+
+
+
+public static void main(String[] args) throws Exception {
+
+Configuration config = new Configuration();
+
+Job U = new Job(config, "temp");
+
+U.setJarByClass(Tempt.class);
+
+U.setMapOutputKeyClass(Text.class);
+
+U.setMapOutputValueClass(IntWritable.class);
+
+U.setOutputKeyClass(Text.class);
+
+U.setOutputValueClass(IntWritable.class);
+
+U.setMapperClass(TemptMap.class);
+
+U.setReducerClass(TemptReduce.class);
+
+U.setInputFormatClass(TextInputFormat.class);
+
+U.setOutputFormatClass(TextOutputFormat.class);
+
+FileInputFormat.addInputPath(U, new Path(args[0]));
+
+FileOutputFormat.setOutputPath(U,new Path(args[1]));
+
+U.waitForCompletion(true);
+}
+}
